@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { selectSong } from '../actions';
 
 class SongList extends Component {
     // Helper Function
@@ -8,7 +9,10 @@ class SongList extends Component {
             return (
                 <div className="item" key={song.title}>
                     <div className="right floated content">
-                        <button className="ui button primary">
+                        <button 
+                            className="ui button primary"
+                            onClick={() => this.props.selectSong(song)}
+                        >
                             Select
                         </button>
                     </div>
@@ -20,15 +24,20 @@ class SongList extends Component {
     };
 
     render() {
+        console.log(this.props);
         return <div className="ui divided list">{this.renderList()}</div>
     }
 }
 
 const mapStateToProps = (state) => { // 1
+    console.log(state);
     return { songs: state.songs };
 };
 
-export default connect(mapStateToProps)(SongList);
+export default connect(
+    mapStateToProps,
+    { selectSong }
+)(SongList); // 4
 
 /*
 Called this by convention
@@ -44,4 +53,5 @@ Steps get data from redux store into a component using redux lib
 3. Will always define mapStateToProps 
     mapStateToProps is always going to get 1st arg of state
     Will always return an obj that will show up as props inside component
+4. Can make this syntax shorter with some es6 if key and value is the same. Just use one word. selectSong: selectSong -> before refactor.  
 */
